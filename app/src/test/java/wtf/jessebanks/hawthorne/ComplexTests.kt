@@ -38,6 +38,12 @@ class ComplexTests {
         assertEquals(complexArray[1].magnitude, Math.sqrt(5.0), DELTA)
         assertEquals(complexArray[0].real, 0.0, DELTA)
 
+        var counter = 0
+        complexArray.forEach {
+            counter++
+        }
+        assertEquals(counter, 2)
+
         complexArray[2] = Complex()
     }
 

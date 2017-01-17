@@ -5,10 +5,12 @@ package wtf.jessebanks.hawthorne.dsp
  * Encapsulates dual DoubleArray objects for efficient representation of Complex types.
  * Created by jessebanks on 1/16/17.
  */
-class ComplexArray(size: Int) {
+class ComplexArray(size: Int) : Iterable<Complex> {
 
     private val realArray = DoubleArray(size)
     private val imagArray = DoubleArray(size)
+
+    val size = realArray.size
 
     operator fun get(index: Int) : Complex {
         return Complex(realArray[index], imagArray[index])
@@ -18,4 +20,11 @@ class ComplexArray(size: Int) {
         realArray[index] = value.real
         imagArray[index] = value.imaginary
     }
+
+    override fun iterator() = object : Iterator<Complex> {
+        private var counter = 0
+        override fun hasNext() = counter < realArray.size
+        override fun next() = this@ComplexArray[counter++]
+    }
+
 }
