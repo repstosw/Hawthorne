@@ -28,6 +28,24 @@ class ComplexTests {
         assertEquals(complex.magnitude, Math.sqrt(5.0), DELTA)
     }
 
+    @Test
+    fun testOperators() {
+        var a = Complex(1.0, 1.0)
+        var b = Complex(2.0, 2.0)
+
+        var c = a + b
+        assertEquals(c.real, 3.0, DELTA)
+        assertEquals(c.imaginary, 3.0, DELTA)
+
+        c = a - b
+        assertEquals(c.real, -1.0, DELTA)
+        assertEquals(c.imaginary, -1.0, DELTA)
+
+        c = a * b
+        assertEquals(c.real, 0.0, DELTA)
+        assertEquals(c.imaginary, 4.0, DELTA)
+    }
+
     @Test(expected = ArrayIndexOutOfBoundsException::class)
     fun testComplexArray() {
 
