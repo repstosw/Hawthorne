@@ -45,3 +45,19 @@ fun fft(x: ComplexArray) : ComplexArray {
 
     return final
 }
+
+/**
+ * Apply a Hamming window to an input of integers.
+ */
+fun hamming(input: ShortArray) : ComplexArray {
+    val N = input.size
+
+    var array = ComplexArray(N)
+    input.forEachIndexed {
+        i, sh ->
+            val scalar = 0.54 - (0.46 * Math.cos((2 * Math.PI * i) / N))
+            array[i] = Complex(sh * scalar, 0.0)
+    }
+
+    return array
+}
