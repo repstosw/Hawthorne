@@ -52,7 +52,7 @@ fun fft(x: ComplexArray) : ComplexArray {
 fun hamming(input: ShortArray) : ComplexArray {
     val N = input.size
 
-    var array = ComplexArray(N)
+    val array = ComplexArray(N)
     input.forEachIndexed {
         i, sh ->
             val scalar = 0.54 - (0.46 * Math.cos((2 * Math.PI * i) / N))
