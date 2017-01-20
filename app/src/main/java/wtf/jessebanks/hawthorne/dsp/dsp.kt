@@ -9,7 +9,7 @@ package wtf.jessebanks.hawthorne.dsp
  * Vanilla Cooley-Tukey FFT algorithm, without scaling.
  * Modified from pseudocode at https://en.wikipedia.org/wiki/Cooley-Tukey_FFT_algorithm
  */
-fun fft(x: ComplexArray) : ComplexArray {
+fun fft(x: ComplexArray): ComplexArray {
 
     val n = x.size
 
@@ -23,19 +23,19 @@ fun fft(x: ComplexArray) : ComplexArray {
         throw IllegalArgumentException("Input data length must have radix 2")
     }
 
-    var even = ComplexArray(n / 2)
+    val even = ComplexArray(n / 2)
     for (i in 0 until (n / 2)) {
         even[i] = x[2 * i]
     }
     val evenResult = fft(even)
 
-    var odd = ComplexArray(n / 2)
+    val odd = ComplexArray(n / 2)
     for (i in 0 until (n / 2)) {
         odd[i] = x[(2 * i) + 1]
     }
     val oddResult = fft(odd)
 
-    var final = ComplexArray(n)
+    val final = ComplexArray(n)
     for (k in 0 until (n / 2)) {
         val thetak = -2.0 * Math.PI * k / n
         val root = Complex(Math.cos(thetak), Math.sin(thetak))
@@ -49,7 +49,7 @@ fun fft(x: ComplexArray) : ComplexArray {
 /**
  * Apply a Hamming window to an input of integers.
  */
-fun hamming(input: ShortArray) : ComplexArray {
+fun hamming(input: ShortArray): ComplexArray {
     val N = input.size
 
     val array = ComplexArray(N)
@@ -60,4 +60,13 @@ fun hamming(input: ShortArray) : ComplexArray {
     }
 
     return array
+}
+
+/**
+ * Convert a array of complex numbers to an array of dB magnitudes
+ */
+fun mag2db(input: ComplexArray): DoubleArray {
+    val output = DoubleArray(input.size)
+    input.forEachIndexed { i, complex ->  output[i] = 20 * Math.log10(complex.magnitude) }
+    return output
 }
