@@ -10,8 +10,20 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="wtf.jessebanks.hawthorne.MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <Button
+        android:text="@string/start_button"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:id="@+id/startButton"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+    <view
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        class="wtf.jessebanks.hawthorne.PlotView"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/plotView"
+        android:layout_above="@+id/startButton" />
+
 </RelativeLayout>
