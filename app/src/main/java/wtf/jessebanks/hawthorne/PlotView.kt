@@ -35,6 +35,7 @@ class PlotView(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
     var data: DoubleArray = DoubleArray(0)
         set(data) {
             scalex = data.size
+            invalidate()
         }
 
     private var xScalar: Double = 1.0
