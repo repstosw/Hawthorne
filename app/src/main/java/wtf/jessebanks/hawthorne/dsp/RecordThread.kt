@@ -16,7 +16,7 @@ import java.util.concurrent.BlockingQueue
 class RecordThread(val produceQueue: BlockingQueue<ShortArray>) : Thread("RecordThread") {
 
     private val TAG = "RecordThread"
-    private val SAMPLE_RATE = 44100
+    val SAMPLE_RATE = 22050
 
     var exit: Boolean = false
         get() = synchronized(this, { field })
