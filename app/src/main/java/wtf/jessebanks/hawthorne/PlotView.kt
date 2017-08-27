@@ -35,6 +35,7 @@ class PlotView(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
     var data: DoubleArray = DoubleArray(0)
         set(data) {
             scalex = data.size
+            field = data
             invalidate()
         }
 
@@ -72,6 +73,10 @@ class PlotView(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
             return
         }
 
+        if (data.isEmpty()) {
+            return
+        }
+
         path.moveTo(0.0f, data[0].toFloat())
         data.forEachIndexed {
             i, d -> path.lineTo((i * xScalar).toFloat(), height - (d * yScalar).toFloat())
@@ -79,7 +84,4 @@ class PlotView(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
 
         canvas.drawPath(path, linePaint)
     }
-
-
-
 }
