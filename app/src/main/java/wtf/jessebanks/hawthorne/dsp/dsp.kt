@@ -4,6 +4,7 @@ package wtf.jessebanks.hawthorne.dsp
  * DSP functions
  * Created by jessebanks on 1/16/17.
  */
+val MAX_N = 1024 // Maximum samples processed by FFT at once
 
 /**
  * Vanilla Cooley-Tukey FFT algorithm, without scaling.
@@ -20,7 +21,7 @@ fun fft(x: ComplexArray): ComplexArray {
 
     // check radix
     if (n % 2 != 0) {
-        throw IllegalArgumentException("Input data length must have radix 2")
+        throw IllegalArgumentException("Input data length must have radix 2, length is $n")
     }
 
     val even = ComplexArray(n / 2)
@@ -37,13 +38,29 @@ fun fft(x: ComplexArray): ComplexArray {
 
     val final = ComplexArray(n)
     for (k in 0 until (n / 2)) {
-        val thetak = -2.0 * Math.PI * k / n
-        val root = Complex(Math.cos(thetak), Math.sin(thetak))
-        final[k] = evenResult[k] + (root * oddResult[k])
-        final[k + (n/2)]  = evenResult[k] - (root * oddResult[k])
+        val twiddle = Twiddles[k * (MAX_N / n)]
+        final[k] = evenResult[k] + twiddle * oddResult[k]
+        final[k + (n / 2)] = evenResult[k] - twiddle * oddResult[k]
     }
 
     return final
+}
+
+
+object Twiddles {
+
+    private val twiddles = ComplexArray(MAX_N / 2)
+
+    init {
+        for (i in 0 until (MAX_N / 2)) {
+            val thetak = (-2.0 * Math.PI * i) / MAX_N
+            twiddles[i] = Complex(Math.cos(thetak), Math.sin(thetak))
+        }
+    }
+
+    operator fun get(i: Int) : Complex {
+        return twiddles[i]
+    }
 }
 
 /**

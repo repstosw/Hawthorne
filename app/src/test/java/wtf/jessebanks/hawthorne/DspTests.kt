@@ -4,6 +4,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 import wtf.jessebanks.hawthorne.dsp.Complex
 import wtf.jessebanks.hawthorne.dsp.ComplexArray
+import wtf.jessebanks.hawthorne.dsp.Twiddles
 import wtf.jessebanks.hawthorne.dsp.fft
 
 /**
@@ -33,4 +34,12 @@ class DspTests {
             assertEquals(it.magnitude, 1.0, DELTA)
         }
     }
+
+    @Test
+    fun testTwiddles() {
+        for (i in 0 until 8) {
+            System.out.println(Twiddles[i].polar)
+        }
+    }
+
 }
