@@ -13,7 +13,7 @@ import java.util.concurrent.BlockingQueue
  * array at a time.
  * Created by jessebanks on 1/7/17.
  */
-class RecordThread(val produceQueue: BlockingQueue<ShortArray>) : Thread("RecordThread") {
+class RecordThread(val produceQueue: BufferQueue) : Thread("RecordThread") {
 
     private val TAG = "RecordThread"
     val SAMPLE_RATE = 22050
@@ -34,11 +34,13 @@ class RecordThread(val produceQueue: BlockingQueue<ShortArray>) : Thread("Record
                 AudioFormat.CHANNEL_IN_MONO,
                 AudioFormat.ENCODING_PCM_16BIT)
 
+        Log.i(TAG, "Buffer size: $bufferSize")
+
         val audioRecord = AudioRecord(MediaRecorder.AudioSource.DEFAULT,
                 SAMPLE_RATE,
                 AudioFormat.CHANNEL_IN_MONO,
                 AudioFormat.ENCODING_PCM_16BIT,
-                bufferSize)
+                2048)
 
         if (audioRecord.state != AudioRecord.STATE_INITIALIZED) {
             Log.e(TAG, "Can't initialize audio recording device")
@@ -52,7 +54,7 @@ class RecordThread(val produceQueue: BlockingQueue<ShortArray>) : Thread("Record
         while (!exit) {
             val buffer = ShortArray(bufferSize / 2)
             val samplesRead = audioRecord.read(buffer, 0, buffer.size)
-            produceQueue.put(buffer)
+            produceQueue.addArray(buffer)
         }
 
         Log.d(TAG, "Exiting thread")

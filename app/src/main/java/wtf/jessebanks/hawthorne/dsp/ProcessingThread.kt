@@ -1,5 +1,6 @@
 package wtf.jessebanks.hawthorne.dsp
 
+import android.os.Process.THREAD_PRIORITY_AUDIO
 import android.util.Log
 import java.util.concurrent.BlockingQueue
 
@@ -7,7 +8,7 @@ import java.util.concurrent.BlockingQueue
  * DSP processing thread
  * Created by jessebanks on 1/16/17.
  */
-class ProcessingThread(val consumeQueue: BlockingQueue<ShortArray>,
+class ProcessingThread(val consumeQueue: BufferQueue,
                        val resultQueue: BlockingQueue<DoubleArray>) : Thread("ProcessingThread") {
 
     private val TAG = "ProcessingThread"
@@ -19,6 +20,7 @@ class ProcessingThread(val consumeQueue: BlockingQueue<ShortArray>,
             field = value })
 
     override fun run() {
+        android.os.Process.setThreadPriority(THREAD_PRIORITY_AUDIO)
         Log.i(TAG, "Starting processing thread")
 
         while(!exit) {
@@ -27,8 +29,10 @@ class ProcessingThread(val consumeQueue: BlockingQueue<ShortArray>,
             // Apply Hamming window
             val hammingSamples = hamming(samples)
 
+            val start = System.currentTimeMillis()
             // Apply FFT
             val fftSamples = fft(hammingSamples)
+            println("fft time: ${System.currentTimeMillis() - start}")
 
             // Get magnitudes
             val mags = mag2db(fftSamples)
